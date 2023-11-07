@@ -146,6 +146,8 @@ found:
   p->context.ra = (uint64)forkret;
   p->context.sp = p->kstack + PGSIZE;
 
+  p->tracemask = 0;
+
   return p;
 }
 
@@ -295,6 +297,9 @@ fork(void)
     return -1;
   }
   np->sz = p->sz;
+
+  // copy tracemask
+  np->tracemask = p->tracemask;
 
   // copy saved user registers.
   *(np->trapframe) = *(p->trapframe);
@@ -685,4 +690,11 @@ procdump(void)
     printf("%d %s %s", p->pid, state, p->name);
     printf("\n");
   }
+}
+
+int
+trace(uint64 tracemask) {
+  struct proc *p = myproc();
+  p->tracemask = tracemask;
+  return 0;
 }
