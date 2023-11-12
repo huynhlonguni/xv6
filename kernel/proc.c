@@ -692,13 +692,6 @@ procdump(void)
   }
 }
 
-int
-trace(uint64 tracemask) {
-  struct proc *p = myproc();
-  p->tracemask = tracemask;
-  return 0;
-}
-
 uint64
 numproc(void)
 {
